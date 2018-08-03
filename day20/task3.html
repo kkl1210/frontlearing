@@ -1,0 +1,46 @@
+<html>
+
+<head>淡入淡出</head>
+
+<body>
+    <div id="fade-obj" style="width:300px;height:300px;background:#000"></div>
+    <button id="fade-btn">淡出</button>
+    <script>
+        var btnEle = document.querySelector('#fade-obj'),
+        objEle =document.querySelector('#fade-obj'),
+        num =10,
+        flag = true,
+        fadeText = '',
+        insetIn,
+        outsetIn;
+        btnEle.onclick = function () {
+            alert("qqqqqqq");
+            fadeCommon();
+            
+        }
+        var fadeCommon = function(){
+            insetIn =setInterval(function () {
+                btnEle.disabled =true;
+                if (flag) {
+                    num--;               
+                }else{num++;}
+                objEle.style.opacity = num/10;
+                if(num<0 || num>10){
+                    clearInterval(insetIn);
+                    btnEle.disabled=false;
+                }
+                if (num) {
+                        fadeText = (flag = true) ? '淡出' : '淡入';
+                        btnEle.innerHTML = fadeText;
+                    } else {
+                        fadeText = (flag = false) ? '淡出' : '淡入';
+                        btnEle.innerHTML = fadeText;
+                    }                
+            },300)
+        };
+        
+    
+    </script>
+</body>
+
+</html>

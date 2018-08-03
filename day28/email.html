@@ -1,0 +1,21 @@
+<html>
+
+<head></head>
+
+<body>
+    <div class="wrapper">
+        <input id="email-input" type="text">
+        <button id="btn">test</button>
+        <ul id="email-sug-wrapper" class="email-sug"></ul>
+    </div>
+    <script>
+    //输入监听
+    document.getElementById("email-input").addEventListener("focus",input,false);
+    function input() {
+        console.log("the inputarea is focus");       
+    }
+    </script>
+
+</body>
+
+</html>
