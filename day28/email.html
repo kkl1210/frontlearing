@@ -1,19 +1,76 @@
 <html>
 
-<head></head>
+<head>
+    <style>
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+    </style>
+</head>
 
 <body>
     <div class="wrapper">
-        <input id="email-input" type="text">
+        <input id="email-input" type="text" oninput="getInputVaule()">
         <button id="btn">test</button>
         <ul id="email-sug-wrapper" class="email-sug"></ul>
     </div>
     <script>
-    //输入监听
-    document.getElementById("email-input").addEventListener("focus",input,false);
-    function input() {
-        console.log("the inputarea is focus");       
-    }
+        let ul = document.querySelector("ul");
+
+        // //输入监听
+        // document.getElementById("email-input").addEventListener("focus", input, false);
+
+        // function input() {
+        //     console.log("the inputarea is focus");
+        //     listContent();
+        //     showControll();
+        // }
+        //获取用户输入
+        function getInputVaule() {
+            let inputbox =document.getElementById("email-input");
+            let inputvalue = inputbox.value.trim();
+            console.log(inputvalue);          
+            listContent(inputvalue);
+            const boxwidth = inputbox.clientWidth;
+            ul.style.border ="1px solid #ECD9C8";
+            ul.style.width = boxwidth;
+
+        }
+        //生成提示框中的提示内容
+        function listContent(inputvalue) {
+            //遍历postFixList
+            ul.innerHTML = '';
+            if (inputvalue === '') {
+                return;
+            }
+            var postfixList = ['163.com', 'gmail.com', '126.com', 'qq.com', '263.net'];
+            for (item in postfixList) {
+                let li = document.createElement("li");
+                li.textContent = inputvalue + '@' + postfixList[item];
+                ul.appendChild(li);
+            }
+        }
+
+        function showControll() {
+            let value = getInputVaule();
+            if (value === "") {
+                show();
+            }
+            hide();
+        }
+
+        function show() {
+            let ul = document.querySelector('ul');
+            ul.style.display = block;
+        }
+
+        function hide() {
+            let ul = document.querySelector('ul');
+            ul.style.display = none;
+
+        }
     </script>
 
 </body>
