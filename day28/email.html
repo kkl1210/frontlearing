@@ -7,12 +7,27 @@
             padding: 0;
             margin: 0;
         }
+
+        /* ul :first-child {
+            background-color: #FFFFCC;
+            border: 1px solid #FF9966;
+        } */
+
+        .checked-li {
+            background-color: #FFFFCC;
+            border: 1px solid #FF9966;
+        }
+
+        .resetstyle {
+            background-color: white;
+            border: 1px solid white;
+        }
     </style>
 </head>
 
 <body>
     <div class="wrapper">
-        <input id="email-input" type="text" oninput="getInputVaule()">
+        <input id="email-input" type="text" oninput="getInputVaule()" onkeydown="confirm(event)">
         <ul id="email-sug-wrapper" class="email-sug"></ul>
     </div>
     <script>
@@ -33,7 +48,14 @@
             let inputbox = document.getElementById("email-input");
             let inputvalue = inputbox.value.trim();
             // inputvalue = encode(inputvalue);
+
+            // myKeyboardEvent();
             listContent(inputvalue);
+            console.log("mykeycode" + event.keyCode);
+            if (event.keycode !== 38 || event.keycode !== 40 || event.keycode !== 13) {
+                resetStatus();
+            }
+            ul.firstChild.className = 'checked-li';
             const boxwidth = inputbox.clientWidth;
             ul.style.border = "1px solid #ECD9C8";
             ul.style.width = boxwidth;
@@ -94,7 +116,7 @@
         }
         //点击添加到输入框
         function clickAndAdd() {
-            console.log('click');
+            // console.log('click');
             let value = this.innerHTML;
             value = decode(value);
             // console.log(this.innerHTML);
@@ -117,6 +139,86 @@
             let output = temp.innerText;
             temp = null;
             return output;
+        }
+        //键盘事件
+        // function myKeyboardEvent() {
+        // console.log("mykeyboardEvent");
+        //arrow key only triggerde by keydown
+        //the keyPress event is fired when you press down on a key that display a character
+        document.addEventListener("keydown", (event) => {
+            let keyname = event.key;
+            let keycode = event.keyCode;
+            let ulchilds = [];
+            ulchilds = ul.childNodes;
+            let length = ulchilds.length;
+            if (keyname === 'Enter') {
+
+
+                for (item in ulchilds) {
+                    if (ulchilds[item].className === 'checked-li') {
+                        let value = ulchilds[item].innerHTML;
+                        value = decode(value);
+                        // console.log(this.innerHTML);
+                        document.getElementById("email-input").value = value;
+                        ul.innerHTML = '';
+                    }
+                }
+            }
+            //37 ← 38 ↑ 39 → 40 ↓
+            // console.log(keycode);
+            if (keycode === 38) {
+                if (ulchilds[0].className !== 'checked-li') {
+                    for (item in ulchilds) {
+                        console.log(ulchilds[item].className);
+                        if (ulchilds[item].className === 'checked-li') {
+                            ulchilds[item].className = 'resetstyle';
+                            ulchilds[item - 1].className = 'checked-li';
+                            break;
+                        }
+                    }
+                } else {
+                    ulchilds[0].className = 'resetstyle';
+
+
+                    ulchilds[length - 1].className = 'checked-li';
+                }
+            }
+
+            if (keycode === 40) {
+                if (ulchilds[length - 1].className !== 'checked-li') {
+                    for (let i = 0; i < length - 1; i++) {
+                        console.log(ulchilds[i].className);
+                        if (ulchilds[i].className === 'checked-li') {
+                            ulchilds[i].className = 'resetstyle';
+                            console.log(ulchilds[i + 1] + '22222')
+                            ulchilds[i + 1].className = 'checked-li';
+                            break;
+                        }
+                    }
+                } else {
+                    ulchilds[length - 1].className = 'resetstyle';
+                    console.log(ulchilds[0] + "111111111111");
+                    ulchilds[0].className = 'checked-li';
+
+                }
+
+            }
+        }, false)
+        //input光标
+        function confirm(event) {
+            var key_num = event.keyCode;
+            if (38 == key_num) {
+                event.preventDefault();
+                // return false;
+            }
+        }
+        // }
+        //重置选中状态
+        function resetStatus() {
+            console.log("resetfunction");
+            ul.childNodes.className = 'resetstyle';
+            console.log(ul.firstChild);
+            ul.firstChild.className = 'checked-li';
         }
     </script>
 
