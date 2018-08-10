@@ -3,7 +3,6 @@
 <head>
     <meta charset="utf-8">
     <script type="text/javascript" src="ife31data.js"></script>
-    <script type="text/javascript" src="LocalStorage.js"></script>
     <link rel="stylesheet" href="style.css">
     <title></title>
 </head>
@@ -219,7 +218,7 @@
 
         function inputOnBlur() {
             // console.log(this.parentNode.childNodes[1])
-            this.parentNode.childNodes[0].value=tp
+            this.parentNode.childNodes[0].value = tp
             this.parentNode.childNodes[1].remove()
             // this.id = ''
             //判断是否是正整数
@@ -270,7 +269,7 @@
             // console.log(textedit)
             // console.log(this.childNodes[0])
         }
-        
+
 
         function edit() {
             tp = this.value
@@ -301,19 +300,25 @@
 
         function ensureChange() {
             console.log('ensure')
-            const input = this.parentNode.parentNode.childNodes[0];
+            console.log(!localStorage.sourceData)
+            if (!localStorage.sourceData) {
+                saveToLocal()
+            } else {
+                const input = this.parentNode.parentNode.childNodes[0];
 
-            const i = input.id.split('-')[1],
-                j = input.id.split('-')[2];
-            console.log(i + '-----' + j)
-            console.log(JSON.parse(localStorage.sourceData)[i])
-            console.log(input.value)
-            //本地存储需要重新保存，不能直接修改，需要取出来
-            let tmp = JSON.parse(localStorage.sourceData)
-            tmp[i].sale[j] = input.value
-            localStorage.sourceData = JSON.stringify(tmp)
-            console.log(tmp)
-            this.parentNode.remove()
+                const i = input.id.split('-')[1],
+                    j = input.id.split('-')[2];
+                console.log(i + '-----' + j)
+                console.log(JSON.parse(localStorage.sourceData)[i])
+                console.log(input.value)
+                //本地存储需要重新保存，不能直接修改，需要取出来
+                let tmp = JSON.parse(localStorage.sourceData)
+                tmp[i].sale[j] = input.value
+                localStorage.sourceData = JSON.stringify(tmp)
+                console.log(tmp)
+                this.parentNode.remove()
+            }
+
         }
 
         function cancelEdit() {
@@ -322,6 +327,18 @@
             this.parentNode.remove()
         }
         // savaData()
+        document.addEventListener("keydown", (event) => {
+            let keyname = event.key;
+            // console.log(keyname)
+            if (keyname === 'Enter') {
+                console.log('enter')
+                ensureChange()
+            }
+            if (keyname === 'Escape') {
+                console.log('Escape')
+                cancelEdit()
+            }
+        }, false)
     </script>
 </body>
 
