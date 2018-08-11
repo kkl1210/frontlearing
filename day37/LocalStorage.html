@@ -105,7 +105,7 @@
             let tr = document.createElement("tr");
             let regionselectedoption = regionSelectOption();
             let productOption = productSelect();
-            let tp;
+
 
             let thArr = ["product", "region", "1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"]
             for (let i = 0; i < thArr.length; i++) {
@@ -215,10 +215,14 @@
             }
         }
         drawTable()
+        let tp;
+        let updatedVal;
 
         function inputOnBlur() {
-            // console.log(this.parentNode.childNodes[1])
-            this.parentNode.childNodes[0].value = tp
+            console.log('inputOnblur')
+            // console.log(this.parentNode)
+            updatedVal = this.value
+            this.value = tp
             this.parentNode.childNodes[1].remove()
             // this.id = ''
             //判断是否是正整数
@@ -288,6 +292,7 @@
             ensure.innerHTML = '✅'
 
             buttonDiv.appendChild(ensure)
+            // ensure.onclick = ensureChange(this)
             ensure.onclick = ensureChange
             const cancel = document.createElement("p")
             cancel.innerHTML = '×'
@@ -300,24 +305,25 @@
 
         function ensureChange() {
             console.log('ensure')
-            console.log(!localStorage.sourceData)
+            // console.log(!localStorage.sourceData)
             if (!localStorage.sourceData) {
                 saveToLocal()
-            } else {
-                const input = this.parentNode.parentNode.childNodes[0];
-
-                const i = input.id.split('-')[1],
-                    j = input.id.split('-')[2];
-                console.log(i + '-----' + j)
-                console.log(JSON.parse(localStorage.sourceData)[i])
-                console.log(input.value)
-                //本地存储需要重新保存，不能直接修改，需要取出来
-                let tmp = JSON.parse(localStorage.sourceData)
-                tmp[i].sale[j] = input.value
-                localStorage.sourceData = JSON.stringify(tmp)
-                console.log(tmp)
-                this.parentNode.remove()
             }
+            const input = this.parentNode.parentNode.childNodes[0];
+            input.value = updatedVal
+
+            const i = input.id.split('-')[1],
+                j = input.id.split('-')[2];
+            // console.log(i + '-----' + j)
+            // console.log(JSON.parse(localStorage.sourceData)[i])
+            // console.log(input.value)
+            //本地存储需要重新保存，不能直接修改，需要取出来
+            let tmp = JSON.parse(localStorage.sourceData)
+            tmp[i].sale[j] = input.value
+            localStorage.sourceData = JSON.stringify(tmp)
+            // console.log(tmp)
+            this.parentNode.remove()
+
 
         }
 
@@ -328,16 +334,25 @@
         }
         // savaData()
         document.addEventListener("keydown", (event) => {
+            console.log(event.target)
+            let target = event.target;
             let keyname = event.key;
             // console.log(keyname)
             if (keyname === 'Enter') {
                 console.log('enter')
-                ensureChange()
+
+                if (target.className === 'edit-input') {
+                    ensureChange(target)
+                }
+
             }
             if (keyname === 'Escape') {
                 console.log('Escape')
-                cancelEdit()
+                if (target.className === 'edit-input') {
+                    cancelEdit()
+                }
             }
+
         }, false)
     </script>
 </body>

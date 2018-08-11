@@ -38,7 +38,7 @@ table {
 
 td,
 th {
-    padding: 2px;
+    padding: 0px;
     text-align: center;
     border: 1px solid;
     width: 80px;
@@ -54,6 +54,10 @@ input {
     width: 70px;
     display: flex;
     vertical-align: middle;
+
+}
+#buttonDiv{
+    width: 35%;
 
 }
 .edit-input{
