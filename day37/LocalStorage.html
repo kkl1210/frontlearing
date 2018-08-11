@@ -218,12 +218,17 @@
         let tp;
         let updatedVal;
 
-        function inputOnBlur() {
+        function inputOnBlur(focusEvent, flag) {
             console.log('inputOnblur')
+            console.log(flag)
             // console.log(this.parentNode)
-            updatedVal = this.value
-            this.value = tp
-            this.parentNode.childNodes[1].remove()
+            if (!flag) {
+                updatedVal = this.value
+                this.value = tp
+                this.parentNode.childNodes[1].remove()
+            } else {
+                this.value = tp
+            }
             // this.id = ''
             //判断是否是正整数
             // const value = this.value
@@ -303,14 +308,19 @@
         }
 
 
-        function ensureChange() {
+        function ensureChange(mouseEvent, node) {
             console.log('ensure')
             // console.log(!localStorage.sourceData)
             if (!localStorage.sourceData) {
                 saveToLocal()
             }
-            const input = this.parentNode.parentNode.childNodes[0];
-            input.value = updatedVal
+            let input;
+            if (!node)
+                input = this.parentNode.parentNode.childNodes[0]
+            else
+                input = node
+            if (updatedVal)
+                input.value = updatedVal
 
             const i = input.id.split('-')[1],
                 j = input.id.split('-')[2];
@@ -322,19 +332,25 @@
             tmp[i].sale[j] = input.value
             localStorage.sourceData = JSON.stringify(tmp)
             // console.log(tmp)
-            this.parentNode.remove()
-
+            document.getElementById('buttonDiv').remove()
+            if (node)
+                input.blur()
 
         }
 
-        function cancelEdit() {
+        function cancelEdit(mouseEvent, node) {
             console.log('cancel')
-            this.parentNode.parentNode.childNodes[0].value = tp
-            this.parentNode.remove()
+            if (!node) {
+                this.parentNode.parentNode.childNodes[0].value = tp
+            } else {
+                node.value = tp
+                node.blur()
+            }
+            document.getElementById('buttonDiv').remove()
         }
         // savaData()
         document.addEventListener("keydown", (event) => {
-            console.log(event.target)
+            // console.log(event.target)
             let target = event.target;
             let keyname = event.key;
             // console.log(keyname)
@@ -342,14 +358,14 @@
                 console.log('enter')
 
                 if (target.className === 'edit-input') {
-                    ensureChange(target)
+                    ensureChange('', target)
                 }
 
             }
             if (keyname === 'Escape') {
                 console.log('Escape')
                 if (target.className === 'edit-input') {
-                    cancelEdit()
+                    cancelEdit('', target)
                 }
             }
 
