@@ -1,0 +1,66 @@
+<html>
+
+<head>
+    <title>Clock</title>
+    <style>
+        #myclock {
+            width: 75%;
+            height: 100px;
+            margin: 0 auto;
+            text-align: center;
+            font-size: 100px;
+
+        }
+
+        #weekday {
+            width: 50%;
+            height: 200px;
+            font-size: 30px;
+            text-align: center;
+            margin: 20px 200px;
+        }
+    </style>
+</head>
+
+<body onload="startTime()">
+    <div id="myclock">       
+    </div>
+    <div id="weekday"></div>
+    <script>
+        function startTime() {
+            let date = new Date();
+            let hours = date.getHours();
+            let minute = date.getMinutes();
+            let second = date.getSeconds();
+            let weekday1 = weekday(date)
+            hours = addZero(hours);
+            minute = addZero(minute);
+            second = addZero(second);
+            document.getElementById("myclock").innerHTML = hours + ':' + minute + ':' + second;
+            document.getElementById("weekday").innerHTML = weekday1;
+            t = setTimeout('startTime()', 500)
+        }
+
+        function addZero(i) {
+            if (i < 10) {
+                console.log(i);
+                i = '0' + i;
+            }
+            return i;
+        }
+
+        function weekday(date) {
+            let week = new Array();
+            week[1] = "Monday";
+            week[2] = "Tuesday";
+            week[3] = "Wednesday";
+            week[4] = "Thursday";
+            week[5] = "Friday";
+            week[6] = "Saturday";
+            week[7] = "Sunday";
+            return week[date.getDay()];
+        }
+    </script>
+</body>
+
+</html>
