@@ -36,11 +36,15 @@
 
 
 
+})();
+var b = {
+    aCallb : function(msg){
+        var info = a.sendMessage(msg)
+        console.log(info.ring)
+        info = null
 
-//安全模式创造工厂类
-var Ball = function (type,name) {
-    if(this instanceof  Ball){
-        var s = new this[type](name)
-    }
-    
+        var abc = a.abc()
+        console.log(abc)
+    }   
 }
+b.aCallb('ringring')
